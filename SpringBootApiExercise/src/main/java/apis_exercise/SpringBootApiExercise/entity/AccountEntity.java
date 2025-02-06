@@ -1,4 +1,4 @@
-package entity;
+package apis_exercise.SpringBootApiExercise.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
