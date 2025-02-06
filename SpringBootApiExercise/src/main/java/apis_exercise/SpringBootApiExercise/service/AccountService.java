@@ -1,10 +1,10 @@
-package service;
+package apis_exercise.SpringBootApiExercise.service;
 
-import dto.AccountDto;
-import entity.AccountEntity;
-import mapper.AccountMapper;
+import apis_exercise.SpringBootApiExercise.dto.AccountDto;
+import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
+import apis_exercise.SpringBootApiExercise.mapper.AccountMapper;
 import org.springframework.stereotype.Service;
-import repository.AccountRepository;
+import apis_exercise.SpringBootApiExercise.repository.AccountRepository;
 
 import java.util.List;
 import java.util.Optional;
