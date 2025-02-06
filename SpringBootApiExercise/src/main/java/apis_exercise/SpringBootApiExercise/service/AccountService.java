@@ -1,6 +1,7 @@
 package apis_exercise.SpringBootApiExercise.service;
 
 import apis_exercise.SpringBootApiExercise.dto.AccountDto;
+import apis_exercise.SpringBootApiExercise.dto.FirstLastNameDto;
 import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
 import apis_exercise.SpringBootApiExercise.mapper.AccountMapper;
 import org.springframework.stereotype.Service;
@@ -82,22 +83,32 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
-	public void updateFullAccountDetails(int id, String firstName, String lastName, String email) {
+	public void updateFullAccountDetails(int id, AccountDto accountDto) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
-		account.setFirstName(firstName);
-		account.setLastName(lastName);
-		account.setEmail(email);
-		accountRepository.save(account);
+
+		//todo debug
+		System.out.println("Incoming AccountDto: " + accountDto);
+		System.out.println("Existing Account Before Update: " + account);
+
+		account.setFirstName(accountDto.getFirstName());
+		account.setLastName(accountDto.getLastName());
+		account.setEmail(accountDto.getEmail());
+
+		AccountEntity updatedAccount = accountRepository.save(account);
+
+		// todo debug
+		System.out.println("Updated Account: " + updatedAccount);
 	}
 
 	public List<AccountDto> getDeactivatedAccounts() {
 		return accountMapper.toDtoList(accountRepository.findByActiveIsFalse());
 	}
 
-	public List<AccountDto> getFirstNameAndLastNameAccountsThatAreDeactivated() {
-		return accountMapper.toDtoList(
-				accountRepository.findByActiveIsFalseOrderByFirstNameAscLastNameAsc()
-		);
+	public List<FirstLastNameDto> getFirstNameAndLastNameAccountsThatAreDeactivated() {
+		List<AccountEntity> deactivatedAccounts = accountRepository.findByActiveIsFalseOrderByFirstNameAscLastNameAsc();
+		return deactivatedAccounts.stream()
+				.map(accountMapper::toFirstLastNameDto)
+				.toList();
 	}
 }

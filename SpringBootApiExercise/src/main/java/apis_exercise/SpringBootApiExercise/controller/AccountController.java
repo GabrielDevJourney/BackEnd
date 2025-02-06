@@ -1,6 +1,8 @@
 package apis_exercise.SpringBootApiExercise.controller;
 
 import apis_exercise.SpringBootApiExercise.dto.AccountDto;
+import apis_exercise.SpringBootApiExercise.dto.FirstLastNameDto;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,16 +81,16 @@ public class AccountController {
 	//! http://localhost:8080/api/accounts/1/names?firstName=Mike&lastName=Smith
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateFullAccountDetails(@PathVariable int id, @RequestParam String firstName,
-	                                                  @RequestParam String lastName,@RequestParam String email){
+	@Transactional
+	public ResponseEntity<?> updateFullAccountDetails(@PathVariable int id, @RequestBody AccountDto accountDto){
 		try{
-			accountService.updateFullAccountDetails(id,firstName,lastName,email);
-			return new ResponseEntity<>(HttpStatus.OK);
+			accountService.updateFullAccountDetails(id,accountDto);
+			return ResponseEntity.ok().build();
 		}catch (Exception e){
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	//! http://localhost:8080/api/accounts/1?firstName=Mike&lastName=Smith&email=mike.demo@gmail.com
+	//! http://localhost:8080/api/accounts/1
 
 	@GetMapping("/deactivated")
 	public ResponseEntity<?> getDeactivatedAccounts() {
@@ -104,7 +106,7 @@ public class AccountController {
 	@GetMapping("/deactivated/names")
 	public ResponseEntity<?> getFirstNameAndLastNameAccountsThatAreDeactivated() {
 		try {
-			List<AccountDto> accounts =
+			List<FirstLastNameDto> accounts =
 					accountService.getFirstNameAndLastNameAccountsThatAreDeactivated();
 			return new ResponseEntity<>(accounts, HttpStatus.OK);
 		} catch (Exception e) {
