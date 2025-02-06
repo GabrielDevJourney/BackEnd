@@ -1,7 +1,7 @@
-package mapper;
+package apis_exercise.SpringBootApiExercise.mapper;
 
-import dto.AccountDto;
-import entity.AccountEntity;
+import apis_exercise.SpringBootApiExercise.dto.AccountDto;
+import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
 import org.mapstruct.Mapper;
 
 import java.util.List;
