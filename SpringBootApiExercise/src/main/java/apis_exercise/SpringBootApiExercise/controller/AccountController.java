@@ -29,7 +29,6 @@ public class AccountController {
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
-	//! http://localhost:8080/api/accounts
 
 	// PathVariable used to say the specific account to deactivate in the REST URL path
 	@PutMapping("/{id}/activate")
@@ -41,7 +40,6 @@ public class AccountController {
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
-	//! http://localhost:8080/api/accounts/1/activate
 
 	// PathVariable used to say the specific account to deactivate in the REST URL path
 	@PutMapping("/{id}/deactivate")
@@ -53,7 +51,6 @@ public class AccountController {
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
-	//! http://localhost:8080/api/accounts/1/deactivate
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteAccount(@PathVariable int id){
@@ -64,21 +61,18 @@ public class AccountController {
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
-	//! http://localhost:8080/api/accounts/1
 
 	// PathVariable used to say the specific account being updated in the REST URL path, but also request what info
 	// is there to be updated
 	@PutMapping("/{id}/names")
-	public ResponseEntity<?> updateFirstNameAndLastName(@PathVariable int id,@RequestParam String firstName,
-	                                                    @RequestParam String lastName){
+	public ResponseEntity<?> updateFirstNameAndLastName(@PathVariable int id,@RequestBody AccountDto accountDto){
 		try{
-			accountService.updateFirstNameAndLastName(id,firstName,lastName);
+			accountService.updateFirstNameAndLastName(id,accountDto);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}catch (Exception e){
 			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
-	//! http://localhost:8080/api/accounts/1/names?firstName=Mike&lastName=Smith
 
 	@PutMapping("/{id}")
 	@Transactional
@@ -90,7 +84,6 @@ public class AccountController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	//! http://localhost:8080/api/accounts/1
 
 	@GetMapping("/deactivated")
 	public ResponseEntity<?> getDeactivatedAccounts() {
@@ -101,7 +94,6 @@ public class AccountController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	//! http://localhost:8080/api/accounts/deactivated
 
 	@GetMapping("/deactivated/names")
 	public ResponseEntity<?> getFirstNameAndLastNameAccountsThatAreDeactivated() {
@@ -113,5 +105,5 @@ public class AccountController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	//! http://localhost:8080/api/accounts/deactivated/names
 }
+

@@ -75,11 +75,11 @@ public class AccountService {
 		accountRepository.delete(account);
 	}
 
-	public void updateFirstNameAndLastName(int id, String firstName, String lastName) {
+	public void updateFirstNameAndLastName(int id, AccountDto accountDto) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
-		account.setFirstName(firstName);
-		account.setLastName(lastName);
+		account.setFirstName(accountDto.getFirstName());
+		account.setLastName(accountDto.getLastName());
 		accountRepository.save(account);
 	}
 
@@ -87,18 +87,12 @@ public class AccountService {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
 
-		//todo debug
-		System.out.println("Incoming AccountDto: " + accountDto);
-		System.out.println("Existing Account Before Update: " + account);
-
 		account.setFirstName(accountDto.getFirstName());
 		account.setLastName(accountDto.getLastName());
 		account.setEmail(accountDto.getEmail());
 
-		AccountEntity updatedAccount = accountRepository.save(account);
+		accountRepository.save(account);
 
-		// todo debug
-		System.out.println("Updated Account: " + updatedAccount);
 	}
 
 	public List<AccountDto> getDeactivatedAccounts() {
