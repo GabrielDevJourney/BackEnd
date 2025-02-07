@@ -12,6 +12,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity,Integer> 
 
 	List<AccountEntity> findByActiveIsFalse();
 
-	// For getting first and last names of deactivated accounts, ordered
 	List<AccountEntity> findByActiveIsFalseOrderByFirstNameAscLastNameAsc();
 }

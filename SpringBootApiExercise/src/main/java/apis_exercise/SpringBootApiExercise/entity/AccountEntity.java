@@ -2,7 +2,6 @@ package apis_exercise.SpringBootApiExercise.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Data
 @AllArgsConstructor

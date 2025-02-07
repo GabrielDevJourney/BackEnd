@@ -8,5 +8,4 @@ import java.util.List;
 public interface VehicleRepository extends JpaRepository<VehicleEntity, Integer> {
 		boolean existsByPlate(String plate);
 		List<VehicleEntity> findByActiveIsTrueAndAccountEntityActiveIsFalse();
-		List<VehicleEntity> findLicensePlateByActiveIsTrueAndAccountEntityActiveIsFalse();
 }

@@ -14,8 +14,8 @@ public class VehicleEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne
-	@JoinColumn(name = "account_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_id", nullable = false)
 	private AccountEntity accountEntity;
 
 	@Column(name = "name", nullable = false)
