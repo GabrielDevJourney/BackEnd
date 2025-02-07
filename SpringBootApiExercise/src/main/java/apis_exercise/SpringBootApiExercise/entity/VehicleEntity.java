@@ -1,30 +1,29 @@
-package entity;
-
+package apis_exercise.SpringBootApiExercise.entity;
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@RequestMapping(name = "vehicle")
+@Table(name = "vehicles")
 public class VehicleEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private int id;
+	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "account_id",referencedColumnName = "id")
+	@JoinColumn(name = "account_id")
 	private AccountEntity accountEntity;
 
-	@Column(name = "plate", unique = true)
+	@Column(name = "name", nullable = false)
+	private String name;
+
+	@Column(name = "plate", nullable = false, unique = true)
 	private String plate;
 
-	@Column(name = "active")
+	@Column(name = "active", columnDefinition = "boolean default true")
 	private boolean active;
-
-
 }
