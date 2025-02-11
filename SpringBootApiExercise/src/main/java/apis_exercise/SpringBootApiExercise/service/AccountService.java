@@ -78,8 +78,14 @@ public class AccountService {
 	public void updateFirstNameAndLastName(int id, AccountDto accountDto) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
-		account.setFirstName(accountDto.getFirstName());
-		account.setLastName(accountDto.getLastName());
+
+		if(accountDto.getFirstName() != null && !accountDto.getFirstName().equals("")){
+			account.setFirstName(accountDto.getFirstName());
+		}
+		if(accountDto.getLastName() != null && !accountDto.getLastName().equals("")){
+			account.setLastName(accountDto.getLastName());
+		}
+
 		accountRepository.save(account);
 	}
 

@@ -64,7 +64,7 @@ public class AccountController {
 
 	// PathVariable used to say the specific account being updated in the REST URL path, but also request what info
 	// is there to be updated
-	@PutMapping("/{id}/names")
+	@PatchMapping("/{id}/names")
 	public ResponseEntity<?> updateFirstNameAndLastName(@PathVariable int id,@RequestBody AccountDto accountDto){
 		try{
 			accountService.updateFirstNameAndLastName(id,accountDto);
