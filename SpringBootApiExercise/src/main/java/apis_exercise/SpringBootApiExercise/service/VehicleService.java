@@ -15,14 +15,12 @@ import java.util.Optional;
 @Service
 public class VehicleService {
 	private final VehicleRepository vehicleRepository;
-	private final AccountRepository accountRepository;
 	private final VehicleMapper vehicleMapper;
 
 	public VehicleService(VehicleRepository vehicleRepository,
 	                      AccountRepository accountRepository,
 	                      VehicleMapper vehicleMapper) {
 		this.vehicleRepository = vehicleRepository;
-		this.accountRepository = accountRepository;
 		this.vehicleMapper = vehicleMapper;
 	}
 
@@ -44,17 +42,6 @@ public class VehicleService {
 			throw new RuntimeException("Plate already exists!");
 		}
 		save(vehicleDto);
-	}
-
-	public void associateVehicleToAccount(int vehicleId, int accountId) {
-		VehicleEntity vehicle = vehicleRepository.findById(vehicleId)
-				.orElseThrow(() -> new RuntimeException("Vehicle not found!"));
-
-		AccountEntity account = accountRepository.findById(accountId)
-				.orElseThrow(() -> new RuntimeException("Account not found!"));
-
-		vehicle.setAccountEntity(account);
-		vehicleRepository.save(vehicle);
 	}
 
 	public void activateVehicle(int id) {
@@ -81,16 +68,4 @@ public class VehicleService {
 		vehicleRepository.save(vehicle);
 	}
 
-	public List<VehicleDto> getDeactivatedAccountsWithActiveVehicles() {
-		return vehicleMapper.toDtoList(
-				vehicleRepository.findByActiveIsTrueAndAccountEntityActiveIsFalse());
-	}
-
-	public List<String> getLicensePlateOfVehiclesThatAreActiveAndBelongsToDeactivatedAccount() {
-		List<VehicleDto> vehicles =
-				vehicleMapper.toDtoList(vehicleRepository.findByActiveIsTrueAndAccountEntityActiveIsFalse());
-		return vehicles.stream()
-				.map(VehicleDto::getPlate)
-				.toList();
-	}
 }

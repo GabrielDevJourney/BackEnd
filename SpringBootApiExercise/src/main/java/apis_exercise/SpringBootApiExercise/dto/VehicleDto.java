@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VehicleDto {
+public class
+VehicleDto {
 	private String plate;
 	private String name;
-	private Integer accountId;
+	private int currentKilometers;
 }

@@ -14,10 +14,6 @@ public class VehicleEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id", nullable = false)
-	private AccountEntity accountEntity;
-
 	@Column(name = "name", nullable = false)
 	private String name;
 
@@ -26,4 +22,7 @@ public class VehicleEntity {
 
 	@Column(name = "active", columnDefinition = "boolean default true")
 	private boolean active;
+
+	@Column(name = "current_kilometers", nullable = false)
+	private int currentKilometers;
 }
