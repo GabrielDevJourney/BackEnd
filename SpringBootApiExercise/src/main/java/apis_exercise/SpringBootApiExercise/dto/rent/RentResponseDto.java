@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentResponseDto {
-	private Integer id;
-	private Integer accountId;
-	private Integer vehicleId;
+	private Long id;
+	private Long accountId;
+	private Long vehicleId;
 	private LocalDateTime dateStart;
 	private LocalDateTime dateEnd;
 	private LocalDateTime dateReturn;
-	private Integer startKilometers;
-	private Integer endKilometers;
+	private int startKilometers;
+	private int endKilometers;
 }

@@ -7,16 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentRequestDto {
-	private Integer id;
-	private Integer accountId;
-	private Integer vehicleId;
+	private Long id;
+	private Long accountId;
+	private Long vehicleId;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateStart;
@@ -24,5 +23,5 @@ public class RentRequestDto {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateEnd;
 
-	private Integer startKilometers;
+	private int startKilometers;
 }

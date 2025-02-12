@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentReturnDto {
-	private Integer id;
-	private Integer endKilometers;
+	private Long id;
+	private int endKilometers;
 }
