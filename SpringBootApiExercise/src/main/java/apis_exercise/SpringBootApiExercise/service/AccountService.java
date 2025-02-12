@@ -20,15 +20,6 @@ public class AccountService {
 		this.accountMapper = accountMapper;
 	}
 
-	public Optional<AccountDto> findById(Integer id) {
-		return accountRepository.findById(id)
-				.map(accountMapper::toDto);
-	}
-
-	public List<AccountDto> findAll() {
-		return accountMapper.toDtoList(accountRepository.findAll());
-	}
-
 	public void save(AccountDto accountDto) {
 		accountRepository.save(accountMapper.toEntity(accountDto));
 	}
@@ -45,7 +36,7 @@ public class AccountService {
 		save(accountDto);
 	}
 
-	public void activateAccount(int id) {
+	public void activateAccount(Long id) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
 
@@ -57,7 +48,7 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
-	public void deactivateAccount(int id) {
+	public void deactivateAccount(Long id) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
 
@@ -69,13 +60,13 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
-	public void deleteAccount(int id) {
+	public void deleteAccount(Long id) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
 		accountRepository.delete(account);
 	}
 
-	public void updateFirstNameAndLastName(int id, AccountDto accountDto) {
+	public void updateFirstNameAndLastName(Long id, AccountDto accountDto) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
 
@@ -89,7 +80,7 @@ public class AccountService {
 		accountRepository.save(account);
 	}
 
-	public void updateFullAccountDetails(int id, AccountDto accountDto) {
+	public void updateFullAccountDetails(Long id, AccountDto accountDto) {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
 

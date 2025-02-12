@@ -3,7 +3,6 @@ package apis_exercise.SpringBootApiExercise.controller;
 import apis_exercise.SpringBootApiExercise.dto.AccountDto;
 import apis_exercise.SpringBootApiExercise.dto.FirstLastNameDto;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import apis_exercise.SpringBootApiExercise.service.AccountService;
@@ -21,89 +20,51 @@ public class AccountController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createAccount(@RequestBody AccountDto accountDto){
-		try{
-			accountService.createAccount(accountDto);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		}catch (Exception e){
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> createAccount(@RequestBody AccountDto accountDto) {
+		accountService.createAccount(accountDto);
+		return ResponseEntity.status(201).build(); // 201 Created
 	}
 
-	// PathVariable used to say the specific account to deactivate in the REST URL path
 	@PutMapping("/{id}/activate")
-	public ResponseEntity<?> activateAccount(@PathVariable int id){
-		try{
-			accountService.activateAccount(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}catch (Exception e){
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> activateAccount(@PathVariable Long id) {
+		accountService.activateAccount(id);
+		return ResponseEntity.ok().build(); // 200 OK
 	}
 
-	// PathVariable used to say the specific account to deactivate in the REST URL path
 	@PutMapping("/{id}/deactivate")
-	public ResponseEntity<?> deactivateAccount(@PathVariable int id){
-		try{
-			accountService.deactivateAccount(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}catch (Exception e){
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> deactivateAccount(@PathVariable Long id) {
+		accountService.deactivateAccount(id);
+		return ResponseEntity.ok().build(); // 200 OK
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteAccount(@PathVariable int id){
-		try{
-			accountService.deleteAccount(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}catch (Exception e){
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+		accountService.deleteAccount(id);
+		return ResponseEntity.ok().build(); // 200 OK
 	}
 
-	// PathVariable used to say the specific account being updated in the REST URL path, but also request what info
-	// is there to be updated
 	@PatchMapping("/{id}/names")
-	public ResponseEntity<?> updateFirstNameAndLastName(@PathVariable int id,@RequestBody AccountDto accountDto){
-		try{
-			accountService.updateFirstNameAndLastName(id,accountDto);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}catch (Exception e){
-			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> updateFirstNameAndLastName(@PathVariable Long id, @RequestBody AccountDto accountDto) {
+		accountService.updateFirstNameAndLastName(id, accountDto);
+		return ResponseEntity.ok().build(); // 200 OK
 	}
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> updateFullAccountDetails(@PathVariable int id, @RequestBody AccountDto accountDto){
-		try{
-			accountService.updateFullAccountDetails(id,accountDto);
-			return ResponseEntity.ok().build();
-		}catch (Exception e){
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	public ResponseEntity<Void> updateFullAccountDetails(@PathVariable Long id, @RequestBody AccountDto accountDto) {
+		accountService.updateFullAccountDetails(id, accountDto);
+		return ResponseEntity.ok().build(); // 200 OK
 	}
 
 	@GetMapping("/deactivated")
-	public ResponseEntity<?> getDeactivatedAccounts() {
-		try {
-			List<AccountDto> accounts = accountService.getDeactivatedAccounts();
-			return new ResponseEntity<>(accounts, HttpStatus.OK);  // Added accounts to response
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<List<AccountDto>> getDeactivatedAccounts() {
+		List<AccountDto> accounts = accountService.getDeactivatedAccounts();
+		return ResponseEntity.ok(accounts); // 200 OK
 	}
 
 	@GetMapping("/deactivated/names")
-	public ResponseEntity<?> getFirstNameAndLastNameAccountsThatAreDeactivated() {
-		try {
-			List<FirstLastNameDto> accounts =
-					accountService.getFirstNameAndLastNameAccountsThatAreDeactivated();
-			return new ResponseEntity<>(accounts, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<List<FirstLastNameDto>> getFirstNameAndLastNameAccountsThatAreDeactivated() {
+		List<FirstLastNameDto> accounts = accountService.getFirstNameAndLastNameAccountsThatAreDeactivated();
+		return ResponseEntity.ok(accounts); // 200 OK
 	}
 }
-
