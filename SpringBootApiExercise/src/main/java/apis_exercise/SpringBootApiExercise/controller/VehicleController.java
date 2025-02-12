@@ -1,12 +1,13 @@
 package apis_exercise.SpringBootApiExercise.controller;
 
+import apis_exercise.SpringBootApiExercise.dto.VehicleDeactivatePlateDto;
 import apis_exercise.SpringBootApiExercise.dto.VehicleDto;
 import apis_exercise.SpringBootApiExercise.service.VehicleService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/vehicles")
@@ -19,34 +20,30 @@ public class VehicleController {
 
 
 	@PostMapping
-	public ResponseEntity<?> createVehicle(@RequestBody VehicleDto vehicleDto) {
-		try {
-			vehicleService.createVehicle(vehicleDto);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> createVehicle(@RequestBody VehicleDto vehicleDto) {
+		vehicleService.createVehicle(vehicleDto);
+		return ResponseEntity.ok().build();
 	}
 
 
 	@PutMapping("/{id}/activate")
-	public ResponseEntity<?> activateVehicle(@PathVariable int id) {
-		try {
-			vehicleService.activateVehicle(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> activateVehicle(@PathVariable Long id) {
+		vehicleService.activateVehicle(id);
+		return ResponseEntity.ok().build();
 	}
 
 
 	@PutMapping("/{id}/deactivate")
-	public ResponseEntity<?> deactivateVehicle(@PathVariable int id) {
-		try {
-			vehicleService.deactivateVehicle(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<?> deactivateVehicle(@PathVariable Long id) {
+
+		vehicleService.deactivateVehicle(id);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/deactivated-plates")
+	public ResponseEntity<List<VehicleDeactivatePlateDto>> getDeactivatedPlates(){
+		List<VehicleDeactivatePlateDto> deactivatePlate = vehicleService.getDeactivatePlate();
+		//since i want plates pass them in the ok response
+		return ResponseEntity.ok(deactivatePlate);
 	}
 }

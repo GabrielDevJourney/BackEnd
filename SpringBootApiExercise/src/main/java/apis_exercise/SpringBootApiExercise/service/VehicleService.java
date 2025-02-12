@@ -1,5 +1,6 @@
 package apis_exercise.SpringBootApiExercise.service;
 
+import apis_exercise.SpringBootApiExercise.dto.VehicleDeactivatePlateDto;
 import apis_exercise.SpringBootApiExercise.dto.VehicleDto;
 import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
 import apis_exercise.SpringBootApiExercise.entity.VehicleEntity;
@@ -24,7 +25,7 @@ public class VehicleService {
 		this.vehicleMapper = vehicleMapper;
 	}
 
-	public Optional<VehicleDto> findById(Integer id) {
+	public Optional<VehicleDto> findById(Long id) {
 		return vehicleRepository.findById(id)
 				.map(vehicleMapper::toDto);
 	}
@@ -44,7 +45,7 @@ public class VehicleService {
 		save(vehicleDto);
 	}
 
-	public void activateVehicle(int id) {
+	public void activateVehicle(Long id) {
 		VehicleEntity vehicle = vehicleRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Vehicle not found!"));
 
@@ -56,7 +57,7 @@ public class VehicleService {
 		vehicleRepository.save(vehicle);
 	}
 
-	public void deactivateVehicle(int id) {
+	public void deactivateVehicle(Long id) {
 		VehicleEntity vehicle = vehicleRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Vehicle not found!"));
 
@@ -68,4 +69,12 @@ public class VehicleService {
 		vehicleRepository.save(vehicle);
 	}
 
+	public List<VehicleDeactivatePlateDto> getDeactivatePlate(){
+		List<VehicleEntity> vehicles = vehicleRepository.findAllByActiveFalse();
+
+		return vehicles.stream()
+				.map(vehicleEntity -> new VehicleDeactivatePlateDto(vehicleEntity.getPlate()))
+				.toList();
+
+	}
 }
