@@ -11,8 +11,8 @@ public interface RentRepository extends JpaRepository<RentEntity, Long> {
 	RentEntity findByIdAndStatus(Long id, RentalStatus status);
 	RentEntity findByAccountEntity_Id(Long accountId);
 	RentEntity findByVehicleEntity_Id(Long vehicleId);
-	RentEntity findByStatus(RentalStatus status);
 	RentEntity findByVehicleEntity_IdAndStatus(Long vehicleId, RentalStatus status);
+	RentEntity findByAccountEntity_IdAndStatus(Long accountId, RentalStatus status);
 
 	List<RentEntity> findAllByAccountEntity_Id(Long accountId);
 	List<RentEntity> findAllByVehicleEntity_Id(Long vehicleId);

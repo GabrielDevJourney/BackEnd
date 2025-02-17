@@ -15,9 +15,14 @@ public interface RentMapper {
 	@Mapping(target = "vehicleEntity.id",source = "vehicleId")
 	RentEntity toEntityRequest(RentRequestDto dto);
 
-	//to respond to get to need to toEntityResponse from client to us only me sending dto to client
 	@Mapping(target = "accountId", source = "accountEntity.id")
 	@Mapping(target = "vehicleId", source = "vehicleEntity.id")
+	@Mapping(source = "dateStart", target = "dateStart")
+	@Mapping(source = "dateEnd", target = "dateEnd")
+	@Mapping(source = "dateReturn", target = "dateReturn")
+	@Mapping(source = "startKilometers", target = "startKilometers")
+	@Mapping(source = "endKilometers", target = "endKilometers")
+	@Mapping(source = "status", target = "rentalStatus")
 	RentResponseDto toDtoResponse(RentEntity entity);
 
 	List<RentResponseDto> toDtoList(List<RentEntity> entities);
