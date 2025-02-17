@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RentRequestDto {
-	private Long id;
 	private Long accountId;
 	private Long vehicleId;
 

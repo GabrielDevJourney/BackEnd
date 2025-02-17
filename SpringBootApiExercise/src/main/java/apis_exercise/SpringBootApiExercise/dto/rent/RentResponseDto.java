@@ -1,5 +1,6 @@
 package apis_exercise.SpringBootApiExercise.dto.rent;
 
+import apis_exercise.SpringBootApiExercise.enums.RentalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,5 @@ public class RentResponseDto {
 	private LocalDateTime dateReturn;
 	private int startKilometers;
 	private int endKilometers;
+	private RentalStatus rentalStatus;
 }

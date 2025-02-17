@@ -2,12 +2,8 @@ package apis_exercise.SpringBootApiExercise.controller;
 
 import apis_exercise.SpringBootApiExercise.dto.rent.RentRequestDto;
 import apis_exercise.SpringBootApiExercise.service.RentService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -19,12 +15,13 @@ public class RentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createRenting(@RequestBody RentRequestDto rentRequestDto){
-		try {
-			rentService.createRenting(rentRequestDto);
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Void> createRenting(@RequestBody RentRequestDto rentRequestDto) {
+		rentService.createRenting(rentRequestDto);
+		return ResponseEntity.ok().build();
+	}
+	@PutMapping("/return/{id}/{endKilometers}")
+	public ResponseEntity<Void> endRenting(@PathVariable Long id, @PathVariable int endKilometers){
+		rentService.endRenting(id,endKilometers);
+		return ResponseEntity.ok().build();
 	}
 }

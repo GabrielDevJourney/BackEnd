@@ -1,5 +1,6 @@
 package apis_exercise.SpringBootApiExercise.entity;
 
+import apis_exercise.SpringBootApiExercise.enums.RentalStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Future;
@@ -60,5 +61,8 @@ public class RentEntity {
 		return endKilometers >= startKilometers;
 	}
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status", nullable = false, length = 20)
+	private RentalStatus status = RentalStatus.ACTIVE;
 
 }
