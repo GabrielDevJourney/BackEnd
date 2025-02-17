@@ -1,18 +1,29 @@
 package apis_exercise.SpringBootApiExercise.dto.vehicle;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class VehicleDto {
+	@NotBlank(message = "Plate is required")
+	@Pattern(regexp = "^[A-Z]{2}-[0-9]{2}-[A-Z]{2}$",
+			message = "Invalid plate format. Must match Portuguese format (e.g., AA-12-BB)")
 	private String plate;
+
+	@NotBlank(message = "Name is required")
+	@Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
 	private String name;
-	private Integer currentKilometers;
+
+	@Min(value = 0, message = "Kilometers must be positive")
+	private int currentKilometers;
 }

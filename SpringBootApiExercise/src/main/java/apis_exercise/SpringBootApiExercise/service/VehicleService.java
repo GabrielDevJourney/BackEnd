@@ -1,8 +1,6 @@
 package apis_exercise.SpringBootApiExercise.service;
 
-import apis_exercise.SpringBootApiExercise.dto.vehicle.VehicleDeactivatePlateDto;
 import apis_exercise.SpringBootApiExercise.dto.vehicle.VehicleDto;
-import apis_exercise.SpringBootApiExercise.entity.VehicleEntity;
 import apis_exercise.SpringBootApiExercise.mapper.VehicleMapper;
 import apis_exercise.SpringBootApiExercise.repository.AccountRepository;
 import apis_exercise.SpringBootApiExercise.repository.VehicleRepository;
@@ -42,4 +40,12 @@ public class VehicleService {
 		}
 		save(vehicleDto);
 	}
+
+	public VehicleDto findByPlate(String plate) {
+		return vehicleRepository.findByPlate(plate)
+				.map(vehicleMapper::toDto)
+				.orElse(null);
+	}
+
+
 }
