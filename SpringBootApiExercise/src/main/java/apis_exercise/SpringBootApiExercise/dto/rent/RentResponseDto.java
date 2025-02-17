@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,9 +17,9 @@ public class RentResponseDto {
 	private Long id;
 	private Long accountId;
 	private Long vehicleId;
-	private LocalDateTime dateStart;
-	private LocalDateTime dateEnd;
-	private LocalDateTime dateReturn;
+	private LocalDate dateStart;
+	private LocalDate dateEnd;
+	private LocalDate dateReturn;
 	private int startKilometers;
 	private int endKilometers;
 	private RentalStatus rentalStatus;
