@@ -3,14 +3,12 @@ package apis_exercise.SpringBootApiExercise.entity;
 import apis_exercise.SpringBootApiExercise.enums.RentalStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

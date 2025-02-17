@@ -40,6 +40,13 @@ public class RentService {
 				accountRepository.findById(rentRequestDto.getAccountId()).orElseThrow(() -> new RuntimeException(
 				"Account not found"));
 
+		List<RentEntity> overlappingRentals = rentRepository.findOverlappingRentals(rentRequestDto.getVehicleId(),
+				rentRequestDto.getDateStart(), rentRequestDto.getDateEnd());
+
+		if(!overlappingRentals.isEmpty()){
+			throw new RuntimeException("Vehicle already rented for this date!");
+		}
+
 		RentEntity rentalEntity = rentMapper.toEntityRequest(rentRequestDto);
 		rentRepository.save(rentalEntity);
 	}
@@ -57,19 +64,23 @@ public class RentService {
 		vehicleRepository.save(vehicle);
 		rentRepository.save(rent);
 	}
+
 	public RentResponseDto getRentingInfo(Long id){
 		RentEntity rent = rentRepository.findById(id).orElseThrow(() -> new RuntimeException("No rental " +
 				"with this id found"));
 		return rentMapper.toDtoResponse(rent);
 	}
+
 	public RentResponseDto getRentingInfoByVehicleId(Long id){
 		RentEntity rent = rentRepository.findByVehicleEntity_Id(id);
 		return rentMapper.toDtoResponse(rent);
 	}
+
 	public RentResponseDto getRentingInfoByAccountId(Long id){
 		RentEntity rent = rentRepository.findByAccountEntity_Id(id);
 		return rentMapper.toDtoResponse(rent);
 	}
+
 	public RentResponseDto getRentingInfoByVehicleIdAndStatus(Long id, RentalStatus status){
 		RentEntity rent = rentRepository.findByVehicleEntity_IdAndStatus(id,status);
 		if(rent.getStatus() != status){
@@ -77,6 +88,7 @@ public class RentService {
 		}
 		return rentMapper.toDtoResponse(rent);
 	}
+
 	public RentResponseDto getRentingInfoByAccountIdAndStatus(Long id, RentalStatus status){
 		RentEntity rent = rentRepository.findByAccountEntity_IdAndStatus(id,status);
 		if(rent.getStatus() != status){
@@ -84,6 +96,7 @@ public class RentService {
 		}
 		return rentMapper.toDtoResponse(rent);
 	}
+
 	public List<RentResponseDto> getAllRentalsForAccount(Long id){
 		List<RentEntity> rentals = rentRepository.findAllByAccountEntity_Id(id);
 		List<RentResponseDto> rentalsDtos = new ArrayList<>();
@@ -92,6 +105,7 @@ public class RentService {
 		}
 		return rentalsDtos;
 	}
+
 	public List<RentResponseDto> getAllRentalsForVehicle(Long id){
 		List<RentEntity> rentals = rentRepository.findAllByVehicleEntity_Id(id);
 		List<RentResponseDto> rentalsDtos = new ArrayList<>();
@@ -100,6 +114,7 @@ public class RentService {
 		}
 		return rentalsDtos;
 	}
+
 	public List<RentResponseDto> getAllRentalsOfStatus(RentalStatus status){
 		List<RentEntity> rentals = rentRepository.findAllByStatus(status);
 		List<RentResponseDto> rentalsDtos = new ArrayList<>();

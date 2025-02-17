@@ -5,8 +5,10 @@ import apis_exercise.SpringBootApiExercise.dto.rent.RentResponseDto;
 import apis_exercise.SpringBootApiExercise.enums.RentalStatus;
 import apis_exercise.SpringBootApiExercise.service.RentService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,10 +21,14 @@ public class RentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createRenting(@RequestBody RentRequestDto rentRequestDto) {
+	public ResponseEntity<Void> createRenting(@Valid @RequestBody RentRequestDto rentRequestDto, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.badRequest().build();
+		}
 		rentService.createRenting(rentRequestDto);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.status(201).build();
 	}
+
 	@PutMapping("/return/{id}/{endKilometers}")
 	public ResponseEntity<Void> endRenting(@PathVariable Long id, @PathVariable int endKilometers){
 		rentService.endRenting(id,endKilometers);
