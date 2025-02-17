@@ -3,7 +3,9 @@ package apis_exercise.SpringBootApiExercise.controller;
 import apis_exercise.SpringBootApiExercise.dto.account.AccountDto;
 import apis_exercise.SpringBootApiExercise.dto.account.FirstLastNameDto;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import apis_exercise.SpringBootApiExercise.service.AccountService;
 
@@ -20,18 +22,21 @@ public class AccountController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createAccount(@RequestBody AccountDto accountDto) {
+	public ResponseEntity<Void> createAccount(@Valid @RequestBody AccountDto accountDto, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()){
+			return ResponseEntity.badRequest().build();
+		}
 		accountService.createAccount(accountDto);
-		return ResponseEntity.status(201).build(); // 201 Created
+		return ResponseEntity.status(201).build();
 	}
 
-	@PutMapping("/{id}/activate")
+	@PatchMapping("/{id}/activate")
 	public ResponseEntity<Void> activateAccount(@PathVariable Long id) {
 		accountService.activateAccount(id);
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping("/{id}/deactivate")
+	@PatchMapping("/{id}/deactivate")
 	public ResponseEntity<Void> deactivateAccount(@PathVariable Long id) {
 		accountService.deactivateAccount(id);
 		return ResponseEntity.ok().build();
@@ -51,7 +56,13 @@ public class AccountController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<Void> updateFullAccountDetails(@PathVariable Long id, @RequestBody AccountDto accountDto) {
+	public ResponseEntity<Void> updateFullAccountDetails(@PathVariable Long id, @Valid @RequestBody AccountDto accountDto,
+			BindingResult bindingResult) {
+
+		if(bindingResult.hasErrors()){
+			return ResponseEntity.badRequest().build();
+		}
+
 		accountService.updateFullAccountDetails(id, accountDto);
 		return ResponseEntity.ok().build();
 	}

@@ -4,8 +4,11 @@ import apis_exercise.SpringBootApiExercise.dto.account.AccountDto;
 import apis_exercise.SpringBootApiExercise.dto.account.FirstLastNameDto;
 import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
 import apis_exercise.SpringBootApiExercise.mapper.AccountMapper;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import apis_exercise.SpringBootApiExercise.repository.AccountRepository;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -69,10 +72,10 @@ public class AccountService {
 		AccountEntity account = accountRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Account not found!"));
 
-		if(accountDto.getFirstName() != null && !accountDto.getFirstName().equals("")){
+		if(accountDto.getFirstName() != null && !accountDto.getFirstName().isEmpty()){
 			account.setFirstName(accountDto.getFirstName());
 		}
-		if(accountDto.getLastName() != null && !accountDto.getLastName().equals("")){
+		if(accountDto.getLastName() != null && !accountDto.getLastName().isEmpty()){
 			account.setLastName(accountDto.getLastName());
 		}
 

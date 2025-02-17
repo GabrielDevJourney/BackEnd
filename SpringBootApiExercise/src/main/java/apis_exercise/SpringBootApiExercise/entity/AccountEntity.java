@@ -3,6 +3,8 @@ package apis_exercise.SpringBootApiExercise.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +15,7 @@ public class AccountEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
+	@NotNull
 	private Long id;
 
 	@Column(name = "first_name")
@@ -25,5 +28,6 @@ public class AccountEntity {
 	private boolean active;
 
 	@Column(name="email",unique = true)
+	@NotNull
 	private String email;
 }
