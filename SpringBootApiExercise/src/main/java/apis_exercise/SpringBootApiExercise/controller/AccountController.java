@@ -1,7 +1,7 @@
 package apis_exercise.SpringBootApiExercise.controller;
 
-import apis_exercise.SpringBootApiExercise.dto.AccountDto;
-import apis_exercise.SpringBootApiExercise.dto.FirstLastNameDto;
+import apis_exercise.SpringBootApiExercise.dto.account.AccountDto;
+import apis_exercise.SpringBootApiExercise.dto.account.FirstLastNameDto;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

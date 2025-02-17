@@ -1,4 +1,4 @@
-package apis_exercise.SpringBootApiExercise.dto;
+package apis_exercise.SpringBootApiExercise.dto.account;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FirstLastNameDto {
+public class AccountDto {
 	private String firstName;
 	private String lastName;
+	private String email;
 }

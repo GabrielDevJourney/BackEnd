@@ -1,14 +1,13 @@
 package apis_exercise.SpringBootApiExercise.service;
 
-import apis_exercise.SpringBootApiExercise.dto.AccountDto;
-import apis_exercise.SpringBootApiExercise.dto.FirstLastNameDto;
+import apis_exercise.SpringBootApiExercise.dto.account.AccountDto;
+import apis_exercise.SpringBootApiExercise.dto.account.FirstLastNameDto;
 import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
 import apis_exercise.SpringBootApiExercise.mapper.AccountMapper;
 import org.springframework.stereotype.Service;
 import apis_exercise.SpringBootApiExercise.repository.AccountRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -25,7 +24,7 @@ public class AccountService {
 	}
 
 
-	public boolean existsByEmail(String email) {
+	private boolean existsByEmail(String email) {
 		return accountRepository.existsByEmail(email);
 	}
 
