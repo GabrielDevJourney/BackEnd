@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface VehicleRepository extends JpaRepository<VehicleEntity, Long> {
 		boolean existsByPlate(String plate);
-		List<VehicleEntity>findAllByActiveFalse();
 }

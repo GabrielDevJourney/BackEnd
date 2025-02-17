@@ -1,15 +1,13 @@
 package apis_exercise.SpringBootApiExercise.service;
 
-import apis_exercise.SpringBootApiExercise.dto.VehicleDeactivatePlateDto;
-import apis_exercise.SpringBootApiExercise.dto.VehicleDto;
-import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
+import apis_exercise.SpringBootApiExercise.dto.vehicle.VehicleDeactivatePlateDto;
+import apis_exercise.SpringBootApiExercise.dto.vehicle.VehicleDto;
 import apis_exercise.SpringBootApiExercise.entity.VehicleEntity;
 import apis_exercise.SpringBootApiExercise.mapper.VehicleMapper;
 import apis_exercise.SpringBootApiExercise.repository.AccountRepository;
 import apis_exercise.SpringBootApiExercise.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,38 +41,5 @@ public class VehicleService {
 			throw new RuntimeException("Plate already exists!");
 		}
 		save(vehicleDto);
-	}
-
-	public void activateVehicle(Long id) {
-		VehicleEntity vehicle = vehicleRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Vehicle not found!"));
-
-		if (vehicle.isActive()) {
-			throw new RuntimeException("Vehicle already active!");
-		}
-
-		vehicle.setActive(true);
-		vehicleRepository.save(vehicle);
-	}
-
-	public void deactivateVehicle(Long id) {
-		VehicleEntity vehicle = vehicleRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Vehicle not found!"));
-
-		if (!vehicle.isActive()) {
-			throw new RuntimeException("Vehicle already deactivated!");
-		}
-
-		vehicle.setActive(false);
-		vehicleRepository.save(vehicle);
-	}
-
-	public List<VehicleDeactivatePlateDto> getDeactivatePlate(){
-		List<VehicleEntity> vehicles = vehicleRepository.findAllByActiveFalse();
-
-		return vehicles.stream()
-				.map(vehicleEntity -> new VehicleDeactivatePlateDto(vehicleEntity.getPlate()))
-				.toList();
-
 	}
 }

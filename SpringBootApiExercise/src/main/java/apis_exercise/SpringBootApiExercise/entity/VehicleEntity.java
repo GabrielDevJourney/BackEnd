@@ -20,9 +20,6 @@ public class VehicleEntity {
 	@Column(name = "plate", nullable = false, unique = true)
 	private String plate;
 
-	@Column(name = "active", columnDefinition = "boolean default true")
-	private boolean active;
-
 	@Column(name = "current_kilometers", nullable = false)
 	private int currentKilometers;
 }

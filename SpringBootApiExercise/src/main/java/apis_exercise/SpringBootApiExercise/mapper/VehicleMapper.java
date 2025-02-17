@@ -1,9 +1,8 @@
 package apis_exercise.SpringBootApiExercise.mapper;
 
-import apis_exercise.SpringBootApiExercise.dto.VehicleDto;
+import apis_exercise.SpringBootApiExercise.dto.vehicle.VehicleDto;
 import apis_exercise.SpringBootApiExercise.entity.VehicleEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

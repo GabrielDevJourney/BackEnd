@@ -1,17 +1,14 @@
-package apis_exercise.SpringBootApiExercise.dto;
+package apis_exercise.SpringBootApiExercise.dto.vehicle;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class
-VehicleDto {
+public class VehicleDeactivatePlateDto {
 	private String plate;
-	private String name;
-	private int currentKilometers;
 }
