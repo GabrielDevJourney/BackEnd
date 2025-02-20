@@ -1,19 +1,19 @@
 package apis_exercise.SpringBootApiExercise.mapper;
 
-import apis_exercise.SpringBootApiExercise.dto.rent.RentRequestDto;
-import apis_exercise.SpringBootApiExercise.dto.rent.RentResponseDto;
-import apis_exercise.SpringBootApiExercise.entity.RentEntity;
+import apis_exercise.SpringBootApiExercise.dto.rent.RentalRequestDto;
+import apis_exercise.SpringBootApiExercise.dto.rent.RentalResponseDto;
+import apis_exercise.SpringBootApiExercise.entity.RentalEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface RentMapper {
+public interface RentalMapper {
 	//to create renting no need for toEntity
 	@Mapping(target = "accountEntity.id", source = "accountId")
 	@Mapping(target = "vehicleEntity.id",source = "vehicleId")
-	RentEntity toEntityRequest(RentRequestDto dto);
+	RentalEntity toEntityRequest(RentalRequestDto dto);
 
 	@Mapping(target = "accountId", source = "accountEntity.id")
 	@Mapping(target = "vehicleId", source = "vehicleEntity.id")
@@ -23,8 +23,8 @@ public interface RentMapper {
 	@Mapping(source = "startKilometers", target = "startKilometers")
 	@Mapping(source = "endKilometers", target = "endKilometers")
 	@Mapping(source = "status", target = "rentalStatus")
-	RentResponseDto toDtoResponse(RentEntity entity);
+	RentalResponseDto toDtoResponse(RentalEntity entity);
 
-	List<RentResponseDto> toDtoList(List<RentEntity> entities);
+	List<RentalResponseDto> toDtoList(List<RentalEntity> entities);
 
 }

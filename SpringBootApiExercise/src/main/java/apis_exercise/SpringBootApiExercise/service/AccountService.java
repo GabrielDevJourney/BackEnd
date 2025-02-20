@@ -26,7 +26,6 @@ public class AccountService {
 		accountRepository.save(accountMapper.toEntity(accountDto));
 	}
 
-
 	private boolean existsByEmail(String email) {
 		return accountRepository.existsByEmail(email);
 	}
