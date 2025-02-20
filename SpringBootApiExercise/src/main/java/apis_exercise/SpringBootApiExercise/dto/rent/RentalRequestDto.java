@@ -1,7 +1,6 @@
 package apis_exercise.SpringBootApiExercise.dto.rent;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RentRequestDto {
+public class RentalRequestDto {
 	@NotNull(message = "Account ID is required")
 	private Long accountId;
 

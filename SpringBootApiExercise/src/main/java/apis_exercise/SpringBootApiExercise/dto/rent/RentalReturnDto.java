@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RentReturnDto {
+public class RentalReturnDto {
 	@NotNull
 	private Long id;
 	@NotNull
