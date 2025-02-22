@@ -19,6 +19,4 @@ public interface AccountMapper {
 	@Mapping(target = "firstName", source = "entity.firstName")
 	@Mapping(target = "lastName", source = "entity.lastName")
 	FirstLastNameDto toFirstLastNameDto(AccountEntity entity);
-
-
 }
