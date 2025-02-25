@@ -1,14 +1,12 @@
 package apis_exercise.SpringBootApiExercise.dto.vehicle;
 
 import apis_exercise.SpringBootApiExercise.enums.VehicleStatus;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 @Data
 @Builder
@@ -31,13 +29,11 @@ public class VehicleDto {
 	@Size(max = 30, message = "Color must be up to 30 characters")
 	private String color;
 
-	@Min(value = 1886, message = "Year must be a valid year (greater than or equal to 1886)")
+	@NotNull(message = "Year of manufacture required")
 	private int yearManufacture;
 
-	@Min(value = 0, message = "Daily rate must be positive")
+	@Range(min = 20, max = 1000, message = "Please enter a proper daily rate")
 	private double dailyRate;
-
-	private VehicleStatus status;
 
 	@Min(value = 0, message = "Kilometers must be positive")
 	private int currentKilometers;

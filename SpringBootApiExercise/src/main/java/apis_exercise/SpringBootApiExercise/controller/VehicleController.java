@@ -28,7 +28,7 @@ public class VehicleController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/search/plate/{plate}")
+	@GetMapping("/search/{plate}")
 	public ResponseEntity<VehicleDto> getVehicleByPlate(@PathVariable String plate) {
 		VehicleDto vehicle = vehicleService.findByPlate(plate);
 		return vehicle != null ? ResponseEntity.ok(vehicle) : ResponseEntity.notFound().build();

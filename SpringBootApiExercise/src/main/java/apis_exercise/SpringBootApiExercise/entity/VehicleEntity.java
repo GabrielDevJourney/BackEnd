@@ -35,7 +35,7 @@ public class VehicleEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, length = 20)
-	private VehicleStatus status;
+	private VehicleStatus status = VehicleStatus.AVAILABLE;
 
 	@Column(name = "current_kilometers", nullable = false)
 	private int currentKilometers;
