@@ -2,8 +2,10 @@ package apis_exercise.SpringBootApiExercise.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -30,4 +32,13 @@ public class AccountEntity {
 	@Column(name="email",unique = true)
 	@NotNull
 	private String email;
+
+	@Column(name = "phone", unique = true)
+	@NotNull
+	private String phoneNumber;
+
+	@Column(name = "age")
+	@NotNull
+	@Range(min = 18, max = 99)
+	private Integer age;
 }

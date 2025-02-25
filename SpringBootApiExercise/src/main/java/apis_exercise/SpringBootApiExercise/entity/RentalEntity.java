@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "rentals")
-public class RentEntity {
+public class RentalEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +58,11 @@ public class RentEntity {
 		if (endKilometers == 0) return true;
 		return endKilometers >= startKilometers;
 	}
+
+	@Column(name = "total_price")
+	@Min(value = 0, message = "Must be above zero")
+	private double totalPrice;
+
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, length = 20)

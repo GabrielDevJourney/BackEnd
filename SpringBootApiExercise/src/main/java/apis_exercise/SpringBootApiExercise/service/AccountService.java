@@ -3,12 +3,10 @@ package apis_exercise.SpringBootApiExercise.service;
 import apis_exercise.SpringBootApiExercise.dto.account.AccountDto;
 import apis_exercise.SpringBootApiExercise.dto.account.FirstLastNameDto;
 import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
+import apis_exercise.SpringBootApiExercise.exception.accountException.*;
 import apis_exercise.SpringBootApiExercise.mapper.AccountMapper;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import apis_exercise.SpringBootApiExercise.repository.AccountRepository;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -22,28 +20,30 @@ public class AccountService {
 		this.accountMapper = accountMapper;
 	}
 
-	public void save(AccountDto accountDto) {
+	//IN CLASS HELPER METHODS
+	private void save(AccountDto accountDto) {
 		accountRepository.save(accountMapper.toEntity(accountDto));
 	}
-
 
 	private boolean existsByEmail(String email) {
 		return accountRepository.existsByEmail(email);
 	}
 
+	//REST ENDPOINTS
 	public void createAccount(AccountDto accountDto) {
-		if (existsByEmail(accountDto.getEmail())) {
-			throw new RuntimeException("Email already exists!");
+		String accountEmail = accountDto.getEmail();
+		if (existsByEmail(accountEmail)) {
+			throw new AccountEmailAlreadyExistsException(accountEmail);
 		}
 		save(accountDto);
 	}
 
 	public void activateAccount(Long id) {
 		AccountEntity account = accountRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Account not found!"));
+				.orElseThrow(() -> new AccountNotFoundException(id));
 
 		if (account.isActive()) {
-			throw new RuntimeException("Account already active!");
+			throw new AccountAlreadyActiveException(id);
 		}
 
 		account.setActive(true);
@@ -52,10 +52,10 @@ public class AccountService {
 
 	public void deactivateAccount(Long id) {
 		AccountEntity account = accountRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Account not found!"));
+				.orElseThrow(() -> new AccountNotFoundException(id));
 
 		if (!account.isActive()) {
-			throw new RuntimeException("Account already deactivated!");
+			throw new AccountAlreadyDeactivatedException(id);
 		}
 
 		account.setActive(false);
@@ -64,13 +64,13 @@ public class AccountService {
 
 	public void deleteAccount(Long id) {
 		AccountEntity account = accountRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Account not found!"));
+				.orElseThrow(() -> new AccountNotFoundException(id));
 		accountRepository.delete(account);
 	}
 
 	public void updateFirstNameAndLastName(Long id, AccountDto accountDto) {
 		AccountEntity account = accountRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Account not found!"));
+				.orElseThrow(() -> new AccountNotFoundException(id));
 
 		if(accountDto.getFirstName() != null && !accountDto.getFirstName().isEmpty()){
 			account.setFirstName(accountDto.getFirstName());
@@ -84,7 +84,7 @@ public class AccountService {
 
 	public void updateFullAccountDetails(Long id, AccountDto accountDto) {
 		AccountEntity account = accountRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Account not found!"));
+				.orElseThrow(() -> new AccountNotFoundException(id));
 
 		account.setFirstName(accountDto.getFirstName());
 		account.setLastName(accountDto.getLastName());
@@ -92,6 +92,45 @@ public class AccountService {
 
 		accountRepository.save(account);
 
+	}
+
+	public void updateAccountAge(Long id, Integer age){
+		AccountEntity account = accountRepository.findById(id)
+				.orElseThrow(() -> new AccountNotFoundException(id));
+		if(age < 18 || age > 99){
+			throw new AccountInvalidAgeException(id);
+		}
+		account.setAge(age);
+		accountRepository.save(account);
+	}
+
+	public void updateAccountEmail(Long id, String email) {
+		AccountEntity account = accountRepository.findById(id)
+				.orElseThrow(() -> new AccountNotFoundException(id));
+
+		if (accountRepository.existsByEmail(email)) {
+			throw new AccountEmailAlreadyExistsException(email);
+		}
+
+		account.setEmail(email);
+		accountRepository.save(account);
+	}
+	public void updateAccountPhoneNumber(Long id, String phoneNumber) {
+		AccountEntity account = accountRepository.findById(id)
+				.orElseThrow(() -> new AccountNotFoundException(id));
+
+		if (!phoneNumber.matches("^(91|92|93|96)\\d{7}$")) {
+			throw new AccountInvalidNumberException(phoneNumber);
+		}
+		account.setPhoneNumber(phoneNumber);
+		accountRepository.save(account);
+	}
+
+
+	public AccountDto getAccountById(Long id) {
+		AccountEntity account = accountRepository.findById(id)
+				.orElseThrow(() -> new AccountNotFoundException(id));
+		return accountMapper.toDto(account);
 	}
 
 	public List<AccountDto> getDeactivatedAccounts() {
@@ -103,5 +142,10 @@ public class AccountService {
 		return deactivatedAccounts.stream()
 				.map(accountMapper::toFirstLastNameDto)
 				.toList();
+	}
+
+	public List<AccountDto> getAllAccounts() {
+		List<AccountEntity> accounts = accountRepository.findAll();
+		return accountMapper.toDtoList(accounts);
 	}
 }

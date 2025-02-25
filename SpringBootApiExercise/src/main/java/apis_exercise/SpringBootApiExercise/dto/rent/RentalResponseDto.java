@@ -7,13 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RentResponseDto {
+public class RentalResponseDto {
 	private Long id;
 	private Long accountId;
 	private Long vehicleId;
