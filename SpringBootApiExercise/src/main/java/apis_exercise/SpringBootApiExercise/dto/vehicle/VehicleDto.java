@@ -37,4 +37,7 @@ public class VehicleDto {
 
 	@Min(value = 0, message = "Kilometers must be positive")
 	private int currentKilometers;
+
+	@Range(min = 5000, max = 10000, message = "Maintenance kilometers must be between 5000km - 10000km")
+	private int maintenanceKilometers;
 }

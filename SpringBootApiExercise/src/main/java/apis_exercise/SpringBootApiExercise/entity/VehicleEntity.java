@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,5 +41,11 @@ public class VehicleEntity {
 
 	@Column(name = "current_kilometers", nullable = false)
 	private int currentKilometers;
+
+	@Column(name = "maintenance_end_date")
+	private LocalDate maintenanceEndDate;
+
+	@Column(name = "maintenance_kilometers")
+	private int maintenanceKilometers;
 
 }
