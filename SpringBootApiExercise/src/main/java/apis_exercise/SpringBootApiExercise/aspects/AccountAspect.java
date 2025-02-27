@@ -1,7 +1,6 @@
-package apis_exercise.SpringBootApiExercise.aspect;
+package apis_exercise.SpringBootApiExercise.aspects;
 
 import apis_exercise.SpringBootApiExercise.dto.account.AccountDto;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -92,6 +91,18 @@ public class AccountAspect {
 	public void logAfterUpdateAccountPhoneNumber() {
 		logger.info("Account phone number updated with success!");
 	}
+
+	@Before("execution(* apis_exercise.SpringBootApiExercise.service.AccountService.updateAccountPhoneNumber(..)) && args(id, phoneNumber)")
+	public void logBeforeUpdateAccountEmail(Long id, String email) {
+		logger.info("Updating email: {} account with ID : {}", email, id);
+	}
+
+	@AfterReturning("execution(* apis_exercise.SpringBootApiExercise.service.AccountService.updateAccountEmail(..)) " +
+			"&& args(id, email)")
+	public void logAfterUpdateAccountEmail() {
+		logger.info("Account email updated with success!");
+	}
+
 
 	@Before("execution(* apis_exercise.SpringBootApiExercise.service.AccountService.updateFullAccountDetails(..)) && args" +
 			"(id, accountDto)")

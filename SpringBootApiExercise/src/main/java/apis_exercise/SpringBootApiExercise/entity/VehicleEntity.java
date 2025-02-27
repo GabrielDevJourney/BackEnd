@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,9 +37,15 @@ public class VehicleEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, length = 20)
-	private VehicleStatus status;
+	private VehicleStatus status = VehicleStatus.AVAILABLE;
 
 	@Column(name = "current_kilometers", nullable = false)
 	private int currentKilometers;
+
+	@Column(name = "maintenance_end_date")
+	private LocalDate maintenanceEndDate;
+
+	@Column(name = "maintenance_kilometers")
+	private int maintenanceKilometers;
 
 }

@@ -1,7 +1,9 @@
 package apis_exercise.SpringBootApiExercise.controller;
 
 import apis_exercise.SpringBootApiExercise.dto.vehicle.VehicleDto;
+import apis_exercise.SpringBootApiExercise.enums.VehicleStatus;
 import apis_exercise.SpringBootApiExercise.service.VehicleService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +30,17 @@ public class VehicleController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/search/plate/{plate}")
+	@Transactional
+	@PatchMapping("/{vehicleId}/status/{status}")
+	public ResponseEntity<Void> updateVehicleStatus(
+			@PathVariable Long vehicleId,
+			@PathVariable VehicleStatus status) {
+
+		vehicleService.updateVehicleStatus(vehicleId, status);
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/search/{plate}")
 	public ResponseEntity<VehicleDto> getVehicleByPlate(@PathVariable String plate) {
 		VehicleDto vehicle = vehicleService.findByPlate(plate);
 		return vehicle != null ? ResponseEntity.ok(vehicle) : ResponseEntity.notFound().build();

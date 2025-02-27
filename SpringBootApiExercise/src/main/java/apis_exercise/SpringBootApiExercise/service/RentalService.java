@@ -6,6 +6,9 @@ import apis_exercise.SpringBootApiExercise.entity.AccountEntity;
 import apis_exercise.SpringBootApiExercise.entity.RentalEntity;
 import apis_exercise.SpringBootApiExercise.entity.VehicleEntity;
 import apis_exercise.SpringBootApiExercise.enums.RentalStatus;
+import apis_exercise.SpringBootApiExercise.exception.accountException.AccountNotFoundException;
+import apis_exercise.SpringBootApiExercise.exception.rentalException.RentalNotFoundException;
+import apis_exercise.SpringBootApiExercise.exception.vehicleException.VehicleNotFoundException;
 import apis_exercise.SpringBootApiExercise.mapper.RentalMapper;
 import apis_exercise.SpringBootApiExercise.repository.AccountRepository;
 import apis_exercise.SpringBootApiExercise.repository.RentalRepository;
@@ -22,51 +25,52 @@ public class RentalService {
 	private final RentalMapper rentalMapper;
 	private final VehicleRepository vehicleRepository;
 	private final AccountRepository accountRepository;
+	private final VehicleService vehicleService;
 
 	public RentalService(RentalRepository rentalRepository, RentalMapper rentalMapper, VehicleRepository vehicleRepository,
-	                     AccountRepository accountRepository) {
+	                     AccountRepository accountRepository, VehicleService vehicleService) {
 		this.rentalRepository = rentalRepository;
 		this.rentalMapper = rentalMapper;
 		this.vehicleRepository = vehicleRepository;
 		this.accountRepository =accountRepository;
+		this.vehicleService = vehicleService;
 	}
 
 	public void createRenting(RentalRequestDto rentalRequestDto){
+		Long vehicleId = rentalRequestDto.getVehicleId();
+		Long accountId = rentalRequestDto.getAccountId();
+
 		VehicleEntity vehicle =
-				vehicleRepository.findById(rentalRequestDto.getVehicleId()).orElseThrow(() -> new RuntimeException(
-						"Vehicle not found"));
+				vehicleRepository.findById(vehicleId).orElseThrow(() -> new VehicleNotFoundException(vehicleId));
 		AccountEntity account =
-				accountRepository.findById(rentalRequestDto.getAccountId()).orElseThrow(() -> new RuntimeException(
-				"Account not found"));
+				accountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(accountId));
 
-		List<RentalEntity> overlappingRentals = rentalRepository.findOverlappingRentals(rentalRequestDto.getVehicleId(),
-				rentalRequestDto.getDateStart(), rentalRequestDto.getDateEnd());
-
-		if(!overlappingRentals.isEmpty()){
-			throw new RuntimeException("Vehicle already rented for this date!");
-		}
+		checkOverLappingDates(rentalRequestDto);
+		vehicleService.setVehicleStatusToRented(vehicle);
 
 		RentalEntity rentalEntity = rentalMapper.toEntityRequest(rentalRequestDto);
 		rentalRepository.save(rentalEntity);
 	}
 
-	public void endRenting(Long id, int endKilometers){
+	public void endRenting(Long id, int endKilometers) {
 		RentalEntity rent = rentalRepository.findByIdAndStatus(id, RentalStatus.ACTIVE);
+		if(rent == null){
+			throw new RentalNotFoundException(rent.getId());
+		}
+		VehicleEntity vehicle = rent.getVehicleEntity();
+		int startKilometers = rent.getStartKilometers();
 
 		rent.setEndKilometers(endKilometers);
 		rent.setDateReturn(LocalDate.now());
 		rent.setStatus(RentalStatus.COMPLETED);
 
-		VehicleEntity vehicle = rent.getVehicleEntity();
-		vehicle.setCurrentKilometers(endKilometers);
+		vehicleService.checkAndScheduleMaintenanceIfNeeded(vehicle, startKilometers, endKilometers);
 
-		vehicleRepository.save(vehicle);
 		rentalRepository.save(rent);
 	}
 
 	public RentalResponseDto getRentingInfo(Long id){
-		RentalEntity rent = rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("No rental " +
-				"with this id found"));
+		RentalEntity rent = rentalRepository.findById(id).orElseThrow(() -> new RentalNotFoundException(id));
 		return rentalMapper.toDtoResponse(rent);
 	}
 
@@ -121,6 +125,17 @@ public class RentalService {
 			rentalsDtos.add(rentalMapper.toDtoResponse(entity));
 		}
 		return rentalsDtos;
+	}
+
+
+	//* HELPER METHODS
+	private void checkOverLappingDates(RentalRequestDto rentalRequestDto){
+		List<RentalEntity> overlappingRentals = rentalRepository.findOverlappingRentals(rentalRequestDto.getVehicleId(),
+				rentalRequestDto.getDateStart(), rentalRequestDto.getDateEnd());
+
+		if(!overlappingRentals.isEmpty()){
+			throw new RuntimeException("Vehicle already rented for this date!");
+		}
 	}
 
 

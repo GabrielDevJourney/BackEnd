@@ -4,6 +4,7 @@ import apis_exercise.SpringBootApiExercise.dto.rent.RentalRequestDto;
 import apis_exercise.SpringBootApiExercise.dto.rent.RentalResponseDto;
 import apis_exercise.SpringBootApiExercise.enums.RentalStatus;
 import apis_exercise.SpringBootApiExercise.service.RentalService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -26,29 +27,35 @@ public class RentalController {
 			return ResponseEntity.badRequest().build();
 		}
 		rentalService.createRenting(rentalRequestDto);
-		return ResponseEntity.status(201).build();
+		return ResponseEntity.ok().build();
 	}
 
+	//todo change this to be a patch
+	@Transactional
 	@PutMapping("/return/{id}/{endKilometers}")
 	public ResponseEntity<Void> endRenting(@PathVariable Long id, @PathVariable int endKilometers){
 		rentalService.endRenting(id,endKilometers);
 		return ResponseEntity.ok().build();
 	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<RentalResponseDto> getRentingInfo(@PathVariable Long id){
 		RentalResponseDto rentalResponseDto = rentalService.getRentingInfo(id);
 		return ResponseEntity.ok(rentalResponseDto);
 	}
+
 	@GetMapping("/vehicle/{id}")
 	public ResponseEntity<RentalResponseDto> getRentingInfoByVehicleId(@PathVariable Long id){
 		RentalResponseDto rentalResponseDto = rentalService.getRentingInfoByVehicleId(id);
 		return ResponseEntity.ok(rentalResponseDto);
 	}
+
 	@GetMapping("/account/{id}")
 	public ResponseEntity<RentalResponseDto> getRentingInfoByAccountId(@PathVariable Long id){
 		RentalResponseDto rentalResponseDto = rentalService.getRentingInfoByAccountId(id);
 		return ResponseEntity.ok(rentalResponseDto);
 	}
+
 	@GetMapping("/vehicle/{id}/{status}")
 	public ResponseEntity<RentalResponseDto> getRentingInfoByVehicleIdAndStatus(@PathVariable Long id,
 	                                                                            @PathVariable RentalStatus status){
@@ -58,6 +65,7 @@ public class RentalController {
 		}
 		return ResponseEntity.ok(rentalResponseDto);
 	}
+
 	@GetMapping("/account/{id}/{status}")
 	public ResponseEntity<RentalResponseDto> getRentingInfoByAccountIdAndStatus(@PathVariable Long id,
 	                                                                            @PathVariable RentalStatus status){
@@ -67,6 +75,7 @@ public class RentalController {
 		}
 		return ResponseEntity.ok(rentalResponseDto);
 	}
+
 	@GetMapping("/account/all/{id}")
 	public ResponseEntity<List<RentalResponseDto>> getRentalsOfAccount(@PathVariable Long id){
 		List<RentalResponseDto> rentalResponseDto = rentalService.getAllRentalsForAccount(id);
@@ -75,6 +84,7 @@ public class RentalController {
 		}
 		return ResponseEntity.ok(rentalResponseDto);
 	}
+
 	@GetMapping("/vehicle/all/{id}")
 	public ResponseEntity<List<RentalResponseDto>> getRentalsOfVehicle(@PathVariable Long id){
 		List<RentalResponseDto> rentalResponseDto = rentalService.getAllRentalsForVehicle(id);
@@ -83,6 +93,7 @@ public class RentalController {
 		}
 		return ResponseEntity.ok(rentalResponseDto);
 	}
+
 	@GetMapping("/all/{status}")
 	public ResponseEntity<List<RentalResponseDto>> getRentalsOfStatus(@PathVariable RentalStatus status){
 		List<RentalResponseDto> rentalResponseDto = rentalService.getAllRentalsOfStatus(status);
@@ -91,7 +102,4 @@ public class RentalController {
 		}
 		return ResponseEntity.ok(rentalResponseDto);
 	}
-
-
-
 }

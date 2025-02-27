@@ -1,4 +1,4 @@
-package apis_exercise.SpringBootApiExercise.aspect;
+package apis_exercise.SpringBootApiExercise.aspects;
 
 import apis_exercise.SpringBootApiExercise.dto.rent.RentalRequestDto;
 import org.aspectj.lang.annotation.After;

@@ -30,6 +30,6 @@ public class AccountDto {
 	private String phoneNumber;
 
 	@NotNull(message = "Must have age")
-	@Range(min = 18, max = 99, message = "Age must be between 18 and 99")
+	@Range(min = 18, max = 150, message = "Age must be between 18 and 99")
 	private Integer age;
 }
