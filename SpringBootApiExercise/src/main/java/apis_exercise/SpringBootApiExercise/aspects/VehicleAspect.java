@@ -1,7 +1,6 @@
-package apis_exercise.SpringBootApiExercise.aspect;
+package apis_exercise.SpringBootApiExercise.aspects;
 
 import apis_exercise.SpringBootApiExercise.dto.vehicle.VehicleDto;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
