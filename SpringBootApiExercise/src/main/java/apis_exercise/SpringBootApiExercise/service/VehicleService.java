@@ -85,6 +85,7 @@ public class VehicleService {
 			throw new VehicleStatusAvailableToRentedException(vehicle.getId());
 		}
 		vehicle.setStatus(VehicleStatus.RENTED);
+		vehicleRepository.save(vehicle);
 	}
 
 	public void setVehicleStatusToMaintenance(VehicleEntity vehicle){
@@ -128,14 +129,15 @@ public class VehicleService {
 
 		if (distanceTraveled >= vehicle.getMaintenanceKilometers()) {
 			setVehicleStatusToMaintenance(vehicle);
+			vehicle.setCurrentKilometers(endKilometers);
 		} else {
-			completeRental(vehicle,endKilometers);
+			completeRentalAndStatusToAvailable(vehicle,endKilometers);
 		}
 
 		vehicleRepository.save(vehicle);
 	}
 
-	public void completeRental(VehicleEntity vehicle, int endKilometers) {
+	public void completeRentalAndStatusToAvailable(VehicleEntity vehicle, int endKilometers) {
 
 		vehicle.setCurrentKilometers(endKilometers);
 		vehicle.setStatus(VehicleStatus.AVAILABLE);

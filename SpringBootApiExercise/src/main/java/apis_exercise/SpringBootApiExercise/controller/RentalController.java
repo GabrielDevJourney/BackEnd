@@ -30,6 +30,7 @@ public class RentalController {
 		return ResponseEntity.ok().build();
 	}
 
+	//todo change this to be a patch
 	@Transactional
 	@PutMapping("/return/{id}/{endKilometers}")
 	public ResponseEntity<Void> endRenting(@PathVariable Long id, @PathVariable int endKilometers){

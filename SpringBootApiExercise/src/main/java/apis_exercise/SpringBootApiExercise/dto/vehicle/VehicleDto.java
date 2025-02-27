@@ -1,6 +1,5 @@
 package apis_exercise.SpringBootApiExercise.dto.vehicle;
 
-import apis_exercise.SpringBootApiExercise.enums.VehicleStatus;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
