@@ -29,7 +29,7 @@ public class AccountController {
 			return ResponseEntity.badRequest().build();
 		}
 		accountService.createAccount(accountDto);
-		return ResponseEntity.status(201).build();
+		return ResponseEntity.ok().build();
 	}
 
 	@PatchMapping("/{id}/activate")

@@ -17,7 +17,6 @@ public class AccountEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	@NotNull
 	private Long id;
 
 	@Column(name = "first_name")
