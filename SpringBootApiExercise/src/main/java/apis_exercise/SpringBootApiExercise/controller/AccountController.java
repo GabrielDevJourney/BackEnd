@@ -24,10 +24,7 @@ public class AccountController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createAccount(@Valid @RequestBody AccountDto accountDto, BindingResult bindingResult) {
-		if(bindingResult.hasErrors()){
-			return ResponseEntity.badRequest().build();
-		}
+	public ResponseEntity<Void> createAccount(@RequestBody AccountDto accountDto) {
 		accountService.createAccount(accountDto);
 		return ResponseEntity.ok().build();
 	}
@@ -48,8 +45,8 @@ public class AccountController {
 
 	@Transactional
 	@PatchMapping("/{id}/names")
-	public ResponseEntity<Void> updateFirstNameAndLastName(@PathVariable Long id, @RequestBody AccountDto accountDto) {
-		accountService.updateFirstNameAndLastName(id, accountDto);
+	public ResponseEntity<Void> updateFirstNameAndLastName(@PathVariable Long id, @RequestBody FirstLastNameDto firstLastNameDto) {
+		accountService.updateFirstNameAndLastName(id, firstLastNameDto);
 		return ResponseEntity.ok().build();
 	}
 	@Transactional

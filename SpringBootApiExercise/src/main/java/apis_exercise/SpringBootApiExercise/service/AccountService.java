@@ -20,21 +20,24 @@ public class AccountService {
 		this.accountMapper = accountMapper;
 	}
 
-	//IN CLASS HELPER METHODS
-	private void save(AccountDto accountDto) {
-		accountRepository.save(accountMapper.toEntity(accountDto));
-	}
-
-	private boolean existsByEmail(String email) {
-		return accountRepository.existsByEmail(email);
-	}
-
 	//REST ENDPOINTS
+	//todo filter name to only allow letters
 	public void createAccount(AccountDto accountDto) {
 		String accountEmail = accountDto.getEmail();
 		if (existsByEmail(accountEmail)) {
 			throw new AccountEmailAlreadyExistsException(accountEmail);
 		}
+
+		Integer age = accountDto.getAge();
+		if (age < 18 || age > 99) {
+			throw new AccountInvalidAgeException(accountDto.getEmail());
+		}
+
+		String phoneNumber = accountDto.getPhoneNumber();
+		if (phoneNumber != null && !phoneNumber.matches("^(91|92|93|96)\\d{7}$")) {
+			throw new AccountInvalidNumberException(phoneNumber);
+		}
+
 		save(accountDto);
 	}
 
@@ -68,69 +71,69 @@ public class AccountService {
 		accountRepository.delete(account);
 	}
 
-	public void updateFirstNameAndLastName(Long id, AccountDto accountDto) {
-		AccountEntity account = accountRepository.findById(id)
+	public void updateFirstNameAndLastName(Long id, FirstLastNameDto firstLastNameDto) {
+		AccountEntity accountEntity = accountRepository.findById(id)
 				.orElseThrow(() -> new AccountNotFoundException(id));
 
-		if(accountDto.getFirstName() != null && !accountDto.getFirstName().isEmpty()){
-			account.setFirstName(accountDto.getFirstName());
+		if(firstLastNameDto.getFirstName() != null && !firstLastNameDto.getFirstName().isEmpty()){
+			accountEntity.setFirstName(firstLastNameDto.getFirstName());
 		}
-		if(accountDto.getLastName() != null && !accountDto.getLastName().isEmpty()){
-			account.setLastName(accountDto.getLastName());
+		if(firstLastNameDto.getLastName() != null && !firstLastNameDto.getLastName().isEmpty()){
+			accountEntity.setLastName(firstLastNameDto.getLastName());
 		}
 
-		accountRepository.save(account);
+		accountRepository.save(accountEntity);
 	}
 
 	public void updateFullAccountDetails(Long id, AccountDto accountDto) {
-		AccountEntity account = accountRepository.findById(id)
+		AccountEntity accountEntity = accountRepository.findById(id)
 				.orElseThrow(() -> new AccountNotFoundException(id));
 
-		account.setFirstName(accountDto.getFirstName());
-		account.setLastName(accountDto.getLastName());
-		account.setEmail(accountDto.getEmail());
+		accountEntity.setFirstName(accountDto.getFirstName());
+		accountEntity.setLastName(accountDto.getLastName());
+		accountEntity.setEmail(accountDto.getEmail());
 
-		accountRepository.save(account);
+		accountRepository.save(accountEntity);
 
 	}
 
 	public void updateAccountAge(Long id, Integer age){
-		AccountEntity account = accountRepository.findById(id)
+		AccountEntity accountEntity = accountRepository.findById(id)
 				.orElseThrow(() -> new AccountNotFoundException(id));
 		if(age < 18 || age > 99){
 			throw new AccountInvalidAgeException(id);
 		}
-		account.setAge(age);
-		accountRepository.save(account);
+		accountEntity.setAge(age);
+		accountRepository.save(accountEntity);
 	}
 
 	public void updateAccountEmail(Long id, String email) {
-		AccountEntity account = accountRepository.findById(id)
+		AccountEntity accountEntity = accountRepository.findById(id)
 				.orElseThrow(() -> new AccountNotFoundException(id));
 
 		if (accountRepository.existsByEmail(email)) {
 			throw new AccountEmailAlreadyExistsException(email);
 		}
 
-		account.setEmail(email);
-		accountRepository.save(account);
+		accountEntity.setEmail(email);
+		accountRepository.save(accountEntity);
 	}
 	public void updateAccountPhoneNumber(Long id, String phoneNumber) {
-		AccountEntity account = accountRepository.findById(id)
+		AccountEntity accountEntity = accountRepository.findById(id)
 				.orElseThrow(() -> new AccountNotFoundException(id));
 
 		if (!phoneNumber.matches("^(91|92|93|96)\\d{7}$")) {
 			throw new AccountInvalidNumberException(phoneNumber);
 		}
-		account.setPhoneNumber(phoneNumber);
-		accountRepository.save(account);
+		accountEntity.setPhoneNumber(phoneNumber);
+		accountRepository.save(accountEntity);
 	}
 
 
 	public AccountDto getAccountById(Long id) {
-		AccountEntity account = accountRepository.findById(id)
+		AccountEntity accountEntity = accountRepository.findById(id)
 				.orElseThrow(() -> new AccountNotFoundException(id));
-		return accountMapper.toDto(account);
+		return accountMapper.toDto(accountEntity);
 	}
 
 	public List<AccountDto> getDeactivatedAccounts() {
@@ -148,4 +151,14 @@ public class AccountService {
 		List<AccountEntity> accounts = accountRepository.findAll();
 		return accountMapper.toDtoList(accounts);
 	}
+
+	//H
+	private void save(AccountDto accountDto) {
+		accountRepository.save(accountMapper.toEntity(accountDto));
+	}
+
+	private boolean existsByEmail(String email) {
+		return accountRepository.existsByEmail(email);
+	}
+
 }

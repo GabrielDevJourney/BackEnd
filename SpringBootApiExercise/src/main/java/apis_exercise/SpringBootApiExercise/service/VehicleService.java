@@ -39,8 +39,9 @@ public class VehicleService {
 	}
 
 	public void createVehicle(VehicleDto vehicleDto) {
-		if (vehicleRepository.existsByPlate(vehicleDto.getPlate())) {
-			throw new RuntimeException("Plate already exists!");
+		String plate = vehicleDto.getPlate();
+		if (vehicleRepository.existsByPlate(plate)) {
+			throw new VehicleLicensePlateAlreadyExistsException(plate);
 		}
 		checkYearOfManufacture(vehicleDto.getYearManufacture());
 
