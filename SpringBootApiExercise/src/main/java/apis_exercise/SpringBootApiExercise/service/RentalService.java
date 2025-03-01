@@ -36,6 +36,7 @@ public class RentalService {
 		this.vehicleService = vehicleService;
 	}
 
+	//todo make start kilometers be automated to use vehicle currentKilometers
 	public void createRenting(RentalRequestDto rentalRequestDto){
 		Long vehicleId = rentalRequestDto.getVehicleId();
 		Long accountId = rentalRequestDto.getAccountId();

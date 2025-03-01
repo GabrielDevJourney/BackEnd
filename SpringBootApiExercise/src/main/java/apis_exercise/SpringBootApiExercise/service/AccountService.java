@@ -21,7 +21,6 @@ public class AccountService {
 	}
 
 	//REST ENDPOINTS
-	//todo need to trhow exceptions for wrong data phone number, age
 	//todo filter name to only allow letters
 	public void createAccount(AccountDto accountDto) {
 		String accountEmail = accountDto.getEmail();
